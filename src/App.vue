@@ -1,72 +1,35 @@
 <template>
   <div class="container">
-    <h1>
-      <Header 
-        @btn-click="toggleAddTask" 
-        title="TSK TRKR" 
-        :showAddTask="showAddTask"
-        />
-      <div v-show="showAddTask">
-        <AddTask @add-task="addTask" />
-      </div>
-      <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
-    </h1>
-
-
+    <Header
+      @toggle-add-task="toggleAddTask"
+      title="Task Tracker"
+      :showAddTask="showAddTask"
+    />
+    <router-view :showAddTask="showAddTask"></router-view>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
-import Tasks from './components/Tasks'
-import AddTask from './components/AddTask'
+import Footer from './components/Footer'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Tasks,
-    AddTask
+    Footer,
   },
   data() {
     return {
-      tasks: [],
-      showAddTask: false
+      showAddTask: false,
     }
   },
   methods: {
-      addTask(task) {
-        this.tasks = [...this.tasks, task]
-      },
-      deleteTask(id) {
-        if (confirm('Are you sure about it?')){
-          this.tasks = this.tasks.filter((task) => task.id !== id)
-
-        }
-      },
-      toggleReminder(id) {
-        this.tasks = this.tasks.map((task) => task.id === id ? {...task, reminder: !task.reminder} : task)
-      },
-      toggleAddTask() {
-        this.showAddTask = !this.showAddTask
-      }
+    toggleAddTask() {
+      this.showAddTask = !this.showAddTask
     },
-  created () {
-    this.tasks = [
-      {
-        id: 1,
-        text: 'Doctor Appointment',
-        day: 'March 1st at 20:00',
-        reminder: true
-      },
-      {
-        id: 2,
-        text: 'Meeting',
-        day: 'March 2nd at 10:00',
-        reminder: false
-      },
-    ]
-  }
+  },
 }
 </script>
 
